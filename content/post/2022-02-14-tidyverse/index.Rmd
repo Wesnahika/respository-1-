@@ -1,0 +1,39 @@
+---
+title: 'Tidyverse '
+author: ''
+date: '2022-02-14'
+slug: tidyverse
+categories: []
+tags: []
+---
+
+## Import file from Github
+
+### Call libraries 
+```{r}
+library(tidyverse)
+```
+
+```{r}
+url <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/hotels.csv'
+hotels <- read_csv(url)
+names(hotels)
+```
+
+### Summary of Variables 
+```{r}
+glimpse(hotels)
+```
+
+## Select Commands 
+
+```{r}
+select(hotels, lead_time)
+```
+```{r}
+hotels %>%
+  select(hotel, lead_time) %>%
+  arrange (desc(lead_time))
+```
+
+  
