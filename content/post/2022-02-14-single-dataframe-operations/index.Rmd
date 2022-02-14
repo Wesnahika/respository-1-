@@ -1,0 +1,238 @@
+---
+title: 'Single dataframe operations '
+author: ''
+date: '2022-02-14'
+slug: single-dataframe-operations
+categories: []
+tags: []
+---
+## Import file from git hub
+
+### Call libraries 
+```{r}
+library(tidyverse)
+```
+
+```{r}
+url <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/hotels.csv'
+hotels <- read_csv(url)
+```
+
+## Select
+
+```
+### Select a range of variables 
+```{r}
+hotels %>%
+  select(hotel:arrival_date_month)
+```
+
+### Select variables with certain characteristics 
+
+```{r}
+hotels %>%
+  select(starts_with("arrival"))
+```
+
+```{r}
+hotels %>%
+  select(ends_with("type"))
+```
+## Arrange
+
+### Arrange in ascending and descending order 
+
+```{r}
+hotels %>%
+  select(adults, children, babies) %>%
+  arrange(babies)
+```
+
+```{r}
+hotels %>%
+  select(adults, children, babies) %>%
+  arrange(desc(babies))
+```
+
+## Slice
+
+### Slice for certain row numbers 
+
+```{r}
+hotels %>%
+  slice(1:5)
+```
+
+## Filter
+
+### Filter to select a subset of rows 
+
+```{r}
+hotels %>%
+  filter(hotel == "City Hotel")
+```
+
+### Filter for many conditions at once 
+
+```{r}
+hotels %>%
+  filter( 
+    adults == 0,
+    children >= 1
+    ) %>% 
+  select(adults, babies, children)
+```
+### Filter for more complex conditions 
+
+```{r}
+hotels %>%
+  filter( 
+    adults == 0,     
+    children >= 1 | babies >= 1     # | means or
+    ) %>%
+  select(adults, babies, children)
+```
+## Distinct 
+
+### Distinct to filter for unique rows 
+
+```{r}
+hotels %>% 
+  distinct(market_segment) %>%
+  arrange(market_segment)
+```
+```{r}
+hotels %>% 
+  distinct(hotel, market_segment) %>%
+  arrange(hotel, market_segment)
+```
+
+## Count 
+
+### Count to create frequency tables 
+
+```{r}
+hotels %>%
+  count(market_segment)
+```
+
+```{r}
+hotels %>%
+  count(market_segment, sort = TRUE)
+```
+
+### Count and arrange 
+```{r}
+hotels %>%
+  count(market_segment) %>%
+  arrange(n)
+```
+
+```{r}
+hotels %>%
+  count(market_segment) %>%
+  arrange(desc(n))
+```
+
+### Count for multiple variables 
+
+```{r}
+hotels %>%
+  count(hotel, market_segment)
+```
+
+### Order matters when you count 
+
+```{r}
+hotels %>%
+  count(hotel, market_segment)
+```
+
+```{r}
+hotels %>%
+  count(market_segment, hotel)
+```
+
+## Muttate 
+
+### Mutate to add a new variable 
+
+```{r}
+hotel_add_new <- hotels %>%
+  mutate(little_ones = children + babies) %>%
+  select(children, babies, little_ones) %>%
+  arrange(desc(little_ones))
+
+hotel_add_new
+```
+
+### Little ones in resort and city hotels 
+
+```{r}
+Hotel_Resort <- hotels %>%
+  mutate(little_ones = children + babies) %>%
+  filter(
+    little_ones >= 1,
+    hotel == "Resort Hotel"
+    ) %>%
+  select(hotel, little_ones)
+
+Hotel_Resort
+```
+
+```{r}
+Hotel_City <- hotels %>%
+  mutate(little_ones = children + babies) %>%
+  filter(
+    little_ones >= 1,
+    hotel == "City Hotel"
+    )  %>%
+  select(hotel, little_ones)
+
+Hotel_City
+```
+
+## Summarize 
+
+### summarize for summary stats 
+
+summarise() changes the data frame entirely, it collapses rows down to a single summary statistic, and removes all columns that are irrelevant to the calculation.
+
+```{r}
+hotels %>%
+  summarise(mean_adr = mean(adr))
+```
+
+### Multiple summary statististics 
+
+summarise can be used for multiple summary statistics as well
+
+```{r}
+hotels %>%
+  summarise(
+    min_adr = min(adr),
+    mean_adr = mean(adr),
+    median_adr = median(adr),
+    max_adr = max(adr)
+    )
+```
+
+## Group by 
+
+### Group by for group operations 
+
+```{r}
+hotels %>%
+  group_by(hotel) %>%
+  summarise(mean_adr = mean(adr))
+```
+
+### Calculating frequencies 
+
+```{r}
+hotels %>%
+  group_by(hotel) %>%
+  summarise(n = n())
+```
+
+
