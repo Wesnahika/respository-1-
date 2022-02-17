@@ -1,0 +1,339 @@
+---
+title: "R markdown introductions"
+author: "Wesnahika Charles"
+date: '2022-02-16'
+slug: r-markdown-introductions
+categories: []
+tags:
+- dataframe
+- GGPLOT2
+- tidyverse
+- rmarkdown
+---
+title: "R_markdown_Wesnahika"
+author: "Wesnahika Charles"
+date: "2/16/2022"
+output: 
+  html_document:
+    theme: yeti
+    highlight: zenburn
+    df_print: paged 
+    toc_float: true
+---
+```{r}
+library(datasets)
+data("iris")
+#load packages 
+pkgs <- c("rstatix", "emmeans", "psych", "tidyr", "tidyverse", "psych", "dplyr", "ggplot2", "lm.beta", "car", "Hmisc", "skimr", "janitor")
+lapply(pkgs, library, character.only = TRUE)
+```
+# Intro 
+
+## Code Chunks 
+
+```{r}
+summary(iris)
+```
+
+```{r}
+mean(iris$Sepal.Length)
+```
+```{r}
+unique(iris$Species)
+```
+
+## Inline Code 
+
+Two plus two equals `r 2+2`. 
+The average Sepal Length is `r mean(iris$Sepal.Length)`. 
+The three levels of Species are `r unique(iris$Species)`. 
+
+# Basics 
+
+## Text 
+
+Plain text 
+End a line with two spaces to start a new paragraph.
+*italics* and _italics_
+**bold** and __bold__
+superscript^2^
+~~strikethrough~~
+[link](www.rstudio.com)
+
+## Headers (level 2)
+
+```{r, eval=FALSE}
+#Make sure to leave a space between the # and your text 
+# Header 1 
+## Header 2
+```
+
+### Header 3
+#### Header 4
+##### Header 5 
+
+## Symbols 
+endash: -- 
+emdash: ---
+ellipsis: ...
+inline equation: $A = \pi*r^2{2}$
+
+horizontal rule (or slide break): 
+
+***
+
+## Formatting 
+
+> block quote 
+
+*unordered list 
+*item 2
+  + sub-item 1 (one tab)
+  + sub-item 2 (one tab)
+  
+1. ordered list 
+2. item 2 
+    + sub-item 1 (two tabs)
+    + sub-item 2 (two tabs)
+    
+First header | Second header
+-------------|--------------
+Table cell 1 | Table cell 2 
+Cell 3       | Cell 4 
+
+## Date 
+
+```{r, eval=FALSE}
+#Add this to date so that today's date is printed whenever doc is knitted 
+title: "R_markdown_Wesnahika"
+author: "Wesnahika Charles"
+date: "`r Sys.Date()`"
+```
+
+# Code specifications 
+
+## Display code 
+
+```{r, echo=FALSE, eval=FALSE}
+echo = TRUE: Whether to display code along with results 
+Default is echo = TRue 
+
+```
+
+```{r, echo=FALSE}
+summary(iris)
+```
+
+## Display Warnings 
+
+```{r, warning=FALSE, eval=FALSE}
+warning=TRUE : whether to display warnings 
+```
+
+### With warnings 
+
+```{r, warning=TRUE}
+
+data <- data.frame(x = 1:5,
+                   y = 1:5)
+ggp <-ggplot(data, aes(x,y)) +
+  geom_point()
+ggp + 
+  scale_x_continuous(limits = c(2,5))
+
+```
+
+## Display errors 
+
+```{r, error=FALSE, eval=FALSE}
+error = FALSE: Whether to display the error or not 
+DEfault is error = TRUE
+```
+
+## Display Output 
+```{r, results=FALSE, eval=FALSE}
+Default results = TRUE
+```
+
+### Output included 
+
+```{r, results=TRUE}
+summary(iris)
+```
+
+### Output not included 
+
+```{r, results=FALSE}
+summary(iris)
+```
+
+## Display messages 
+
+```{r, message=FALSE, eval=FALSE}
+Default messge = TRUE
+
+```
+
+### Messages not included 
+
+```{r, message=FALSE, results=FALSE}
+#load packages 
+pkgs <- c("rstatix", "emmeans", "psych", "tidyr", "tidyverse", "psych", "dplyr", "ggplot2", "lm.beta", "car", "Hmisc", "skimr", "janitor")
+lapply(pkgs, library, character.only = TRUE)
+```
+
+## Other Specifications
+```{r, eval=FALSE}
+message = TRUE: Whether to display messages 
+eval = TRUE: Whether to evaluate the code and its included results
+tidy = FALSE: Whether to format code in a tidy way when displaying it 
+fig.width = 7: Width in inches for plots created in chunk 
+fig.height = 7: height in inches for plots created in chunk 
+
+```
+
+## Global Specification 
+
+```{r, setup, include==FALSE}
+knitr::opts_chunk$set(echo = TRUE) #This sets all chunks to inlude the code unless specified
+
+```
+
+## Bold code 
+
+```{r}
+### <b>
+x <- 10 
+y <- x * 2 
+## <b>
+```
+
+# Table of contents
+
+## Basic TOC 
+
+```{r, eval=FALSE}
+title: "R_markdown_Wesnahika"
+author: "Wesnahika Charles"
+date: "2/16/2022"
+output:
+  html_document
+  toc: true 
+  toc_depth: 2 #This includes up to two headers 
+  
+
+```
+
+## Floating TOC 
+
+```{r, eval=FALSE}
+title: "R_markdown_Wesnahika"
+author: "Wesnahika Charles"
+date: "2/16/2022"
+output:
+  html_document
+  toc: true 
+  toc_float: true 
+  collapsed: true
+  smooth_scroll: true 
+  toc_depth: 3
+```
+
+# Tabs {.tabset}
+
+* You can make it so that all subheadings are tabbed using the {. tabset} command after heading your title
+
+## Study 1 
+
+```{r, eval=FALSE}
+e.g. study 1 graph 
+
+```
+
+# Appearance 
+
+## Themes 
+
+### Built in themes 
+
+```{r, eval=FALSE}
+theme: Specicifies theme to use from Bootswatch theme library 
+specify: default, cerulean, journal, flatly, darkly, readable, spacelab, united, cosmo, lumean, paper , sandstone, simplex, and yeti (use null for no theme)
+```
+
+## Highlight 
+
+```{r, eval=FALSE}
+ Highlight: Specifies syntax highlighting style 
+Specify: default, tango, pygments, kate, monochrome, espresso, zenburn, hadlock, breezedark, and textmate(use null for no highlight)
+```
+
+## Smart
+
+```{r, eval=FALSE}
+Smart changes: straight quotes to curly quotes, --- to em-dashes, -- to en-dashes, and ... to ellipses
+
+Smart is enabled by default 
+```
+
+### Data Frame Printing 
+
+```{r, eval=FALSE}
+
+output:
+  html_document:
+    df_print: paged 
+```
+
+# Figures 
+
+## Embed Images 
+image: ![](nyu.jpeg)(width=50%)
+
+## Creating images 
+```{r}
+fig.width: 7 
+fig.height: 7
+fig_caption: true 
+dev: png
+```
+
+# Advanced Inline code 
+```{r}
+#run anov
+model <- aov(Sepal.Length~ Species, data = iris)
+summary(model)
+
+#Create a clean tibble from output using broom package 
+library(broom)
+modelmatrix <- broom::tidy(model)
+
+#Round to 3 decimals for clean output 
+modelmatrix$statistic <- sprintf(modelmatrix$statistic, fmt = '%#.3f')
+modelmatrix$p.value <- sprintf(modelmatrix$p.value, fmt = '%#.3f')
+
+modelmatrix
+```
+> There is a significant main effect of Species on Sepal Length, *F*(`r modelmatrix$df[1]`, `r modelmatrix$df[2]`) = 
+`r modelmatrix$statistic[1]`, *p* = `r modelmaxtrix$p.value[1]`
+
+# Notes
+
+>
+1. Using ~ in your paths wont work with rmd 
+2. Be mindful of the pathways/ working directory you are using 
+3. Make sure you are knitting the right type of doc
+4. Make sure you are using back quote not apostrophe 
+5. Make sure you are capitalizing all letters in the {r} code specifications 
+6. The knitted doc is different depending on which type of markdown_script you use 
+7. Dont forget to add a space between # and the header
+8. To hide library loadings, use both results=FALSE and message=FALSE.
+
+
+
+
+
+
+
+
+

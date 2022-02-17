@@ -1,0 +1,147 @@
+---
+title: 'Working with multiple data frames '
+author: ''
+date: '2022-02-15'
+slug: working-with-multiple-data-frames
+categories: []
+tags:
+  - dataframe
+---
+
+# Data: women in science  '
+
+## Call library 
+```{r}
+library(tidyverse)
+```
+
+```{r}
+url <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/professions.csv' 
+professions = read_csv(url)
+```
+
+```{r}
+url1 <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/works.csv'
+works  = read_csv(url1)
+```
+
+```{r}
+url2 <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/dates.csv'
+dates = read_csv(url2)
+```
+
+## Inputs 
+```{r}
+professions
+```
+### Reminder 
+```{r}
+names(professions)
+```
+```{r}
+names(dates)
+```
+```{r}
+names(works)
+```
+```{r}
+nrow(professions)
+```
+
+```{r}
+nrow(dates)
+```
+
+```{r}
+nrow(works)
+```
+
+## Joining data frames
+
+### left_join()
+```{r}
+professions %>% 
+  left_join(dates)
+```
+
+### right_join()
+
+```{r}
+professions %>%
+  right_join(dates)
+```
+
+### full_join()
+
+```{r}
+dates %>%
+  full_join(works)
+```
+
+### inner_join()
+
+```{r}
+dates %>%
+  inner_join(works)
+```
+
+### Semi_join(works)
+
+```{r}
+dates %>%
+  semi_join(works)
+
+```
+
+### anti_join()
+
+```{r}
+dates %>%
+  anti_join(works)
+```
+### putting it together 
+
+```{r}
+professions %>%
+  left_join(dates) %>%
+  left_join(works)
+```
+# Case Study: Student records 
+
+## Student records 
+Have:
+Enrolment: official university enrolment records
+Survey: Student provided info missing students who never filled it out and including students who filled it out but dropped the class
+Want: Survey info for all enrolled in class
+
+## Just convert csv file
+
+```{r}
+url <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/enrolment.csv'
+enrolment = read_csv(url)
+```
+
+```{r}
+url1 <- 'https://github.com/Wesnahika/tidyverse/blob/main/survey.csv'
+survey = read_csv(url1)
+```
+
+### In class
+```{r}
+enrolment %>%
+  left_join(survey, by = c("id"))
+```
+
+### Survey missing 
+
+```{r}
+enrolment %>%
+  anti_join(survey, by = "id")
+```
+
+### Dropped
+
+```{r}
+
+```
+

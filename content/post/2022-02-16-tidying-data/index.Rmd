@@ -1,0 +1,10 @@
+---
+title: 'Tidying data '
+author: ''
+date: '2022-02-16'
+slug: tidying-data
+categories: []
+tags:
+  - tidyverse
+  - dataframe
+---
