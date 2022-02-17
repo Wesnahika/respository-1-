@@ -129,7 +129,7 @@ survey = read_csv(url1)
 ### In class
 ```{r}
 enrolment %>%
-  left_join(survey, by = c("id"))
+  left_join(survey, by = "id")
 ```
 
 ### Survey missing 
@@ -142,6 +142,6 @@ enrolment %>%
 ### Dropped
 
 ```{r}
-
+anti_join(survey, enrolment, by = "id")
 ```
 

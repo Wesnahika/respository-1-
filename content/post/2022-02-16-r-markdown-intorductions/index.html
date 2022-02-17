@@ -1,0 +1,442 @@
+---
+title: 'R markdown introductions '
+author: 'Wesnahika C. '
+date: '2022-02-16'
+slug: r-markdown-intorductions
+categories: []
+tags:
+  - dataframe
+  - rmarkdown
+  - tidyverse
+  - GGPLOT2
+  
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<pre class="r"><code>library(datasets)
+data(&quot;iris&quot;)
+#load packages 
+pkgs &lt;- c(&quot;rstatix&quot;, &quot;emmeans&quot;, &quot;psych&quot;, &quot;tidyr&quot;, &quot;tidyverse&quot;, &quot;psych&quot;, &quot;dplyr&quot;, &quot;ggplot2&quot;, &quot;lm.beta&quot;, &quot;car&quot;, &quot;Hmisc&quot;, &quot;skimr&quot;, &quot;janitor&quot;)
+lapply(pkgs, library, character.only = TRUE)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;rstatix&quot;   &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot; &quot;utils&quot;     &quot;datasets&quot; 
+## [7] &quot;methods&quot;   &quot;base&quot;     
+## 
+## [[2]]
+## [1] &quot;emmeans&quot;   &quot;rstatix&quot;   &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot; &quot;utils&quot;    
+## [7] &quot;datasets&quot;  &quot;methods&quot;   &quot;base&quot;     
+## 
+## [[3]]
+##  [1] &quot;psych&quot;     &quot;emmeans&quot;   &quot;rstatix&quot;   &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot;
+##  [7] &quot;utils&quot;     &quot;datasets&quot;  &quot;methods&quot;   &quot;base&quot;     
+## 
+## [[4]]
+##  [1] &quot;tidyr&quot;     &quot;psych&quot;     &quot;emmeans&quot;   &quot;rstatix&quot;   &quot;stats&quot;     &quot;graphics&quot; 
+##  [7] &quot;grDevices&quot; &quot;utils&quot;     &quot;datasets&quot;  &quot;methods&quot;   &quot;base&quot;     
+## 
+## [[5]]
+##  [1] &quot;forcats&quot;   &quot;stringr&quot;   &quot;dplyr&quot;     &quot;purrr&quot;     &quot;readr&quot;     &quot;tibble&quot;   
+##  [7] &quot;ggplot2&quot;   &quot;tidyverse&quot; &quot;tidyr&quot;     &quot;psych&quot;     &quot;emmeans&quot;   &quot;rstatix&quot;  
+## [13] &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot; &quot;utils&quot;     &quot;datasets&quot;  &quot;methods&quot;  
+## [19] &quot;base&quot;     
+## 
+## [[6]]
+##  [1] &quot;forcats&quot;   &quot;stringr&quot;   &quot;dplyr&quot;     &quot;purrr&quot;     &quot;readr&quot;     &quot;tibble&quot;   
+##  [7] &quot;ggplot2&quot;   &quot;tidyverse&quot; &quot;tidyr&quot;     &quot;psych&quot;     &quot;emmeans&quot;   &quot;rstatix&quot;  
+## [13] &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot; &quot;utils&quot;     &quot;datasets&quot;  &quot;methods&quot;  
+## [19] &quot;base&quot;     
+## 
+## [[7]]
+##  [1] &quot;forcats&quot;   &quot;stringr&quot;   &quot;dplyr&quot;     &quot;purrr&quot;     &quot;readr&quot;     &quot;tibble&quot;   
+##  [7] &quot;ggplot2&quot;   &quot;tidyverse&quot; &quot;tidyr&quot;     &quot;psych&quot;     &quot;emmeans&quot;   &quot;rstatix&quot;  
+## [13] &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot; &quot;utils&quot;     &quot;datasets&quot;  &quot;methods&quot;  
+## [19] &quot;base&quot;     
+## 
+## [[8]]
+##  [1] &quot;forcats&quot;   &quot;stringr&quot;   &quot;dplyr&quot;     &quot;purrr&quot;     &quot;readr&quot;     &quot;tibble&quot;   
+##  [7] &quot;ggplot2&quot;   &quot;tidyverse&quot; &quot;tidyr&quot;     &quot;psych&quot;     &quot;emmeans&quot;   &quot;rstatix&quot;  
+## [13] &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot; &quot;utils&quot;     &quot;datasets&quot;  &quot;methods&quot;  
+## [19] &quot;base&quot;     
+## 
+## [[9]]
+##  [1] &quot;lm.beta&quot;   &quot;forcats&quot;   &quot;stringr&quot;   &quot;dplyr&quot;     &quot;purrr&quot;     &quot;readr&quot;    
+##  [7] &quot;tibble&quot;    &quot;ggplot2&quot;   &quot;tidyverse&quot; &quot;tidyr&quot;     &quot;psych&quot;     &quot;emmeans&quot;  
+## [13] &quot;rstatix&quot;   &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot; &quot;utils&quot;     &quot;datasets&quot; 
+## [19] &quot;methods&quot;   &quot;base&quot;     
+## 
+## [[10]]
+##  [1] &quot;car&quot;       &quot;carData&quot;   &quot;lm.beta&quot;   &quot;forcats&quot;   &quot;stringr&quot;   &quot;dplyr&quot;    
+##  [7] &quot;purrr&quot;     &quot;readr&quot;     &quot;tibble&quot;    &quot;ggplot2&quot;   &quot;tidyverse&quot; &quot;tidyr&quot;    
+## [13] &quot;psych&quot;     &quot;emmeans&quot;   &quot;rstatix&quot;   &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot;
+## [19] &quot;utils&quot;     &quot;datasets&quot;  &quot;methods&quot;   &quot;base&quot;     
+## 
+## [[11]]
+##  [1] &quot;Hmisc&quot;     &quot;Formula&quot;   &quot;survival&quot;  &quot;lattice&quot;   &quot;car&quot;       &quot;carData&quot;  
+##  [7] &quot;lm.beta&quot;   &quot;forcats&quot;   &quot;stringr&quot;   &quot;dplyr&quot;     &quot;purrr&quot;     &quot;readr&quot;    
+## [13] &quot;tibble&quot;    &quot;ggplot2&quot;   &quot;tidyverse&quot; &quot;tidyr&quot;     &quot;psych&quot;     &quot;emmeans&quot;  
+## [19] &quot;rstatix&quot;   &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot; &quot;utils&quot;     &quot;datasets&quot; 
+## [25] &quot;methods&quot;   &quot;base&quot;     
+## 
+## [[12]]
+##  [1] &quot;skimr&quot;     &quot;Hmisc&quot;     &quot;Formula&quot;   &quot;survival&quot;  &quot;lattice&quot;   &quot;car&quot;      
+##  [7] &quot;carData&quot;   &quot;lm.beta&quot;   &quot;forcats&quot;   &quot;stringr&quot;   &quot;dplyr&quot;     &quot;purrr&quot;    
+## [13] &quot;readr&quot;     &quot;tibble&quot;    &quot;ggplot2&quot;   &quot;tidyverse&quot; &quot;tidyr&quot;     &quot;psych&quot;    
+## [19] &quot;emmeans&quot;   &quot;rstatix&quot;   &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot; &quot;utils&quot;    
+## [25] &quot;datasets&quot;  &quot;methods&quot;   &quot;base&quot;     
+## 
+## [[13]]
+##  [1] &quot;janitor&quot;   &quot;skimr&quot;     &quot;Hmisc&quot;     &quot;Formula&quot;   &quot;survival&quot;  &quot;lattice&quot;  
+##  [7] &quot;car&quot;       &quot;carData&quot;   &quot;lm.beta&quot;   &quot;forcats&quot;   &quot;stringr&quot;   &quot;dplyr&quot;    
+## [13] &quot;purrr&quot;     &quot;readr&quot;     &quot;tibble&quot;    &quot;ggplot2&quot;   &quot;tidyverse&quot; &quot;tidyr&quot;    
+## [19] &quot;psych&quot;     &quot;emmeans&quot;   &quot;rstatix&quot;   &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot;
+## [25] &quot;utils&quot;     &quot;datasets&quot;  &quot;methods&quot;   &quot;base&quot;</code></pre>
+<p>#Intro</p>
+<div id="code-chunks" class="section level2">
+<h2>Code chunks</h2>
+<pre class="r"><code>summary(iris)</code></pre>
+<pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## </code></pre>
+<pre class="r"><code>mean(iris$Sepal.Length)</code></pre>
+<pre><code>## [1] 5.843333</code></pre>
+<pre class="r"><code>unique(iris$Species)</code></pre>
+<pre><code>## [1] setosa     versicolor virginica 
+## Levels: setosa versicolor virginica</code></pre>
+</div>
+<div id="inline-code" class="section level2">
+<h2>Inline code</h2>
+<p>Two plus two equals 4.
+The average Sepal Length is 5.8433333.
+The three levels of Species are setosa, versicolor, virginica.</p>
+</div>
+<div id="basics" class="section level1">
+<h1>Basics</h1>
+<div id="text" class="section level2">
+<h2>Text</h2>
+<p>Plain text
+End a line with two spaces to start a new paragraph.
+<em>italics</em> and <em>italics</em>
+<strong>bold</strong> and <strong>bold</strong>
+superscript<sup>2</sup>
+<del>strikethrough</del>
+<a href="www.rstudio.com">link</a></p>
+</div>
+<div id="headers-level-2" class="section level2">
+<h2>Headers (Level 2)</h2>
+<pre class="r"><code>Make sure to leave a space between the # and your text 
+# Header 1 
+## Header 2</code></pre>
+<div id="header-3" class="section level3">
+<h3>Header 3</h3>
+<div id="header-4" class="section level4">
+<h4>Header 4</h4>
+<div id="header-5" class="section level5">
+<h5>Header 5</h5>
+</div>
+</div>
+</div>
+</div>
+<div id="symbols" class="section level2">
+<h2>Symbols</h2>
+<p>endash: –
+emdash: —
+ellipsis: …
+inline equation: <span class="math inline">\(A = \pi*r^2{2}\)</span></p>
+<p>horizontal rule (or slide break):</p>
+<hr />
+</div>
+<div id="formatting" class="section level2">
+<h2>Formatting</h2>
+<blockquote>
+<p>block quote</p>
+</blockquote>
+<p><em>unordered list
+</em>item 2
++ sub-item 1 (one tab)
++ sub-item 2 (one tab)</p>
+<ol style="list-style-type: decimal">
+<li>ordered list</li>
+<li>item 2
+<ul>
+<li>sub-item 1 (two tabs)</li>
+<li>sub-item 2 (two tabs)</li>
+</ul></li>
+</ol>
+<table>
+<thead>
+<tr class="header">
+<th>First header</th>
+<th>Second header</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Table cell 1</td>
+<td>Table cell 2</td>
+</tr>
+<tr class="even">
+<td>Cell 3</td>
+<td>Cell 4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="date" class="section level2">
+<h2>Date</h2>
+<pre class="r"><code>#Add this to date so that today&#39;s date is printed whenever doc is knitted 
+title: &quot;R_markdown_Wesnahika&quot;
+author: &quot;Wesnahika Charles&quot;
+date: &quot;`r Sys.Date()`&quot;</code></pre>
+</div>
+</div>
+<div id="code-specifications" class="section level1">
+<h1>Code Specifications</h1>
+<div id="display-code" class="section level2">
+<h2>Display Code</h2>
+<pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## </code></pre>
+</div>
+<div id="display-warnings" class="section level2">
+<h2>Display Warnings</h2>
+<pre class="r"><code>warning=TRUE : whether to display warnings </code></pre>
+<div id="with-warnings" class="section level3">
+<h3>With warnings</h3>
+<pre class="r"><code>data &lt;- data.frame(x = 1:5,
+                   y = 1:5)
+ggp &lt;-ggplot(data, aes(x,y)) +
+  geom_point()
+ggp + 
+  scale_x_continuous(limits = c(2,5))</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="without-warnings" class="section level3">
+<h3>Without warnings</h3>
+<pre class="r"><code>data &lt;- data.frame(x = 1:5,
+                   y = 1:5)
+ggp &lt;-ggplot(data, aes(x,y)) +
+  geom_point()
+ggp + 
+  scale_x_continuous(limits = c(2,5))</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+</div>
+<div id="display-error" class="section level2">
+<h2>Display error</h2>
+<pre class="r"><code>error = FALSE: Whether to display the error or not 
+DEfault is error = TRUE</code></pre>
+</div>
+<div id="display-output" class="section level2">
+<h2>Display output</h2>
+<pre class="r"><code>Default results = TRUE</code></pre>
+<div id="output-included" class="section level3">
+<h3>Output included</h3>
+<pre class="r"><code>summary(iris)</code></pre>
+<pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## </code></pre>
+</div>
+<div id="output-not-included" class="section level3">
+<h3>Output not included</h3>
+<pre class="r"><code>summary(iris)</code></pre>
+<pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## </code></pre>
+</div>
+</div>
+<div id="display-messages" class="section level2">
+<h2>Display messages</h2>
+<pre class="r"><code>Default messge = TRUE</code></pre>
+<div id="messages-nit-included" class="section level3">
+<h3>Messages nit included</h3>
+<pre class="r"><code>#load packages 
+pkgs &lt;- c(&quot;rstatix&quot;, &quot;emmeans&quot;, &quot;psych&quot;, &quot;tidyr&quot;, &quot;tidyverse&quot;, &quot;psych&quot;, &quot;dplyr&quot;, &quot;ggplot2&quot;, &quot;lm.beta&quot;, &quot;car&quot;, &quot;Hmisc&quot;, &quot;skimr&quot;, &quot;janitor&quot;)
+lapply(pkgs, library, character.only = TRUE)</code></pre>
+</div>
+</div>
+<div id="other-specifications" class="section level2">
+<h2>Other specifications</h2>
+<pre class="r"><code>message = TRUE: Whether to display messages 
+eval = TRUE: Whether to evaluate the code and its included results
+tidy = FALSE: Whether to format code in a tidy way when displaying it 
+fig.width = 7: Width in inches for plots created in chunk 
+fig.height = 7: height in inches for plots created in chunk </code></pre>
+</div>
+<div id="global-specifications" class="section level2">
+<h2>Global Specifications</h2>
+</div>
+<div id="bold-code" class="section level2">
+<h2>Bold code</h2>
+<pre class="r"><code>## &lt;b&gt;
+x &lt;- 10 
+y &lt;- x * 2 
+## &lt;b&gt;</code></pre>
+</div>
+</div>
+<div id="table-of-contents" class="section level1">
+<h1>Table of contents</h1>
+<div id="basic-toc" class="section level2">
+<h2>Basic TOC</h2>
+<pre class="r"><code>title: &quot;R_markdown_Wesnahika&quot;
+author: &quot;Wesnahika Charles&quot;
+date: &quot;2/16/2022&quot;
+output:
+  html_document
+  toc: true 
+  toc_depth: 2 #This includes up to two headers </code></pre>
+</div>
+<div id="floating-toc" class="section level2">
+<h2>Floating TOC</h2>
+<pre class="r"><code>title: &quot;R_markdown_Wesnahika&quot;
+author: &quot;Wesnahika Charles&quot;
+date: &quot;2/16/2022&quot;
+output:
+  html_document
+  toc: true 
+  toc_float: true 
+  collapsed: true
+  smooth_scroll: true 
+  toc_depth: 3</code></pre>
+</div>
+</div>
+<div id="tabs" class="section level1 tabset">
+<h1>Tabs</h1>
+<ul>
+<li>You can make it so that all subheadings are tabbed using the {. tabset} command after heading your title</li>
+</ul>
+<div id="study-1" class="section level2">
+<h2>Study 1</h2>
+<pre class="r"><code>e.g. study 1 graph</code></pre>
+</div>
+<div id="study-2" class="section level2">
+<h2>Study 2</h2>
+<pre class="r"><code>e.g. study 2 graph </code></pre>
+</div>
+</div>
+<div id="appearence" class="section level1">
+<h1>Appearence</h1>
+<div id="themes" class="section level2">
+<h2>Themes</h2>
+<div id="built-in-themes" class="section level3">
+<h3>Built in themes</h3>
+<pre class="r"><code>theme: Specicifies theme to use from Bootswatch theme library 
+specify: default, cerulean, journal, flatly, darkly, readable, spacelab, united, cosmo, lumean, paper , sandstone, simplex, and yeti (use null for no theme)</code></pre>
+</div>
+</div>
+<div id="highlight" class="section level2">
+<h2>Highlight</h2>
+<pre class="r"><code>Highlight: Specifies syntax highlighting style 
+Specify: default, tango, pygments, kate, monochrome, espresso, zenburn, hadlock, breezedark, and textmate(use null for no highlight)</code></pre>
+<p>#Smart</p>
+<pre class="r"><code>Smart changes: straight quotes to curly quotes, --- to em-dashes, -- to en-dashes, and ... to ellipses
+
+Smart is enabled by default </code></pre>
+<div id="data-frame-printing" class="section level3">
+<h3>Data frame printing</h3>
+<pre class="r"><code>output:
+  html_document:
+    df_print: paged</code></pre>
+</div>
+</div>
+</div>
+<div id="figures" class="section level1">
+<h1>Figures</h1>
+<div id="embed-images" class="section level2">
+<h2>Embed Images</h2>
+<p>image: <img src="nyu.jpeg" />(width=50%)</p>
+</div>
+<div id="creating-images" class="section level2">
+<h2>Creating images</h2>
+<pre class="r"><code>fig.width: 7 
+fig.height: 7
+fig_caption: true 
+dev: png</code></pre>
+</div>
+</div>
+<div id="advanced-inline-code" class="section level1">
+<h1>Advanced inline code</h1>
+<pre class="r"><code>#run anov
+model &lt;- aov(Sepal.Length~ Species, data = iris)
+summary(model)</code></pre>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## Species       2  63.21  31.606   119.3 &lt;2e-16 ***
+## Residuals   147  38.96   0.265                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>#Create a clean tibble from output using broom package 
+library(broom)
+modelmatrix &lt;- broom::tidy(model)
+
+#Round to 3 decimals for clean output 
+modelmatrix$statistic &lt;- sprintf(modelmatrix$statistic, fmt = &#39;%#.3f&#39;)
+modelmatrix$p.value &lt;- sprintf(modelmatrix$p.value, fmt = &#39;%#.3f&#39;)
+
+modelmatrix</code></pre>
+<pre><code>## # A tibble: 2 x 6
+##   term         df sumsq meansq statistic p.value
+##   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;  
+## 1 Species       2  63.2 31.6   119.265   0.000  
+## 2 Residuals   147  39.0  0.265 NA        NA</code></pre>
+</div>
+<div id="notes" class="section level1">
+<h1>Notes</h1>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>Using ~ in your paths wont work with rmd</li>
+<li>Be mindful of the pathways/ working directory you are using</li>
+<li>Make sure you are knitting the right type of doc</li>
+<li>Make sure you are using back quote not apostrophe</li>
+<li>Make sure you are capitalizing all letters in the {r} code specifications</li>
+<li>The knitted doc is different depending on which type of markdown_script you use</li>
+<li>Dont forget to add a space between # and the header</li>
+<li>To hide library loadings, use both results=FALSE and message = FALSE</li>
+</ol>
+</blockquote>
+</div>

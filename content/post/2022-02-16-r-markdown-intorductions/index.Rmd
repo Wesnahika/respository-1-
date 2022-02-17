@@ -1,26 +1,27 @@
 ---
-title: "R markdown introductions"
-author: "Wesnahika Charles"
+title: 'R markdown introductions '
+author: 'Wesnahika C. '
 date: '2022-02-16'
-slug: r-markdown-introductions
+slug: r-markdown-intorductions
 categories: []
 tags:
-- dataframe
-- GGPLOT2
-- tidyverse
-- rmarkdown
+  - dataframe
+  - rmarkdown
+  - tidyverse
+  - GGPLOT2
+  
 ---
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(datasets)
 data("iris")
 #load packages 
 pkgs <- c("rstatix", "emmeans", "psych", "tidyr", "tidyverse", "psych", "dplyr", "ggplot2", "lm.beta", "car", "Hmisc", "skimr", "janitor")
 lapply(pkgs, library, character.only = TRUE)
-
 ```
-# Intro 
 
-## Code Chunks 
+#Intro 
+
+## Code chunks 
 
 ```{r}
 summary(iris)
@@ -29,15 +30,16 @@ summary(iris)
 ```{r}
 mean(iris$Sepal.Length)
 ```
+
 ```{r}
 unique(iris$Species)
 ```
 
-## Inline Code 
+## Inline code 
 
 Two plus two equals `r 2+2`. 
 The average Sepal Length is `r mean(iris$Sepal.Length)`. 
-The three levels of Species are `r unique(iris$Species)`. 
+The three levels of Species are `r unique(iris$Species)`.
 
 # Basics 
 
@@ -51,10 +53,10 @@ superscript^2^
 ~~strikethrough~~
 [link](www.rstudio.com)
 
-## Headers (level 2)
+## Headers (Level 2)
 
 ```{r, eval=FALSE}
-#Make sure to leave a space between the # and your text 
+Make sure to leave a space between the # and your text 
 # Header 1 
 ## Header 2
 ```
@@ -69,7 +71,7 @@ emdash: ---
 ellipsis: ...
 inline equation: $A = \pi*r^2{2}$
 
-horizontal rule (or slide break): 
+horizontal rule (or slide break):
 
 ***
 
@@ -94,21 +96,20 @@ Cell 3       | Cell 4
 
 ## Date 
 
-```{r eval=FALSE, include=FALSE}
+```{r, eval = FALSE}
 #Add this to date so that today's date is printed whenever doc is knitted 
-#title: "R_markdown_Wesnahika"
-#author: "Wesnahika Charles"
-#date: "`r Sys.Date()`"
+title: "R_markdown_Wesnahika"
+author: "Wesnahika Charles"
+date: "`r Sys.Date()`"
 ```
 
-# Code specifications 
+# Code Specifications 
 
-## Display code 
+## Display Code 
 
 ```{r, echo=FALSE, eval=FALSE}
-#echo=TRUE: Whether to display code along with results 
-#Default is echo = TRue 
-
+echo = TRUE: Whether to display code along with results 
+Default is echo = TRue 
 ```
 
 ```{r, echo=FALSE}
@@ -118,32 +119,42 @@ summary(iris)
 ## Display Warnings 
 
 ```{r, warning=FALSE, eval=FALSE}
-#warning=TRUE : whether to display warnings 
+warning=TRUE : whether to display warnings 
 ```
 
 ### With warnings 
 
 ```{r, warning=TRUE}
-
 data <- data.frame(x = 1:5,
                    y = 1:5)
 ggp <-ggplot(data, aes(x,y)) +
   geom_point()
 ggp + 
   scale_x_continuous(limits = c(2,5))
-
 ```
 
-## Display errors 
+### Without warnings 
+
+```{r, warning = FALSE}
+data <- data.frame(x = 1:5,
+                   y = 1:5)
+ggp <-ggplot(data, aes(x,y)) +
+  geom_point()
+ggp + 
+  scale_x_continuous(limits = c(2,5))
+```
+
+## Display error 
 
 ```{r, error=FALSE, eval=FALSE}
-#error = FALSE: Whether to display the error or not 
-#DEfault is error = TRUE
+error = FALSE: Whether to display the error or not 
+DEfault is error = TRUE
 ```
 
-## Display Output 
+## Display output 
+
 ```{r, results=FALSE, eval=FALSE}
-#Default results = TRUE
+Default results = TRUE
 ```
 
 ### Output included 
@@ -154,18 +165,17 @@ summary(iris)
 
 ### Output not included 
 
-```{r, results=FALSE}
+```{r}
 summary(iris)
 ```
 
 ## Display messages 
 
 ```{r, message=FALSE, eval=FALSE}
-#Default messge = TRUE
-
+Default messge = TRUE
 ```
 
-### Messages not included 
+### Messages nit included 
 
 ```{r, message=FALSE, results=FALSE}
 #load packages 
@@ -173,19 +183,20 @@ pkgs <- c("rstatix", "emmeans", "psych", "tidyr", "tidyverse", "psych", "dplyr",
 lapply(pkgs, library, character.only = TRUE)
 ```
 
-## Other Specifications
+## Other specifications 
+
 ```{r, eval=FALSE}
-#message = TRUE: Whether to display messages 
-#eval = TRUE: Whether to evaluate the code and its included results
-#tidy = FALSE: Whether to format code in a tidy way when displaying it 
-#fig.width = 7: Width in inches for plots created in chunk 
-#fig.height = 7: height in inches for plots created in chunk 
+message = TRUE: Whether to display messages 
+eval = TRUE: Whether to evaluate the code and its included results
+tidy = FALSE: Whether to format code in a tidy way when displaying it 
+fig.width = 7: Width in inches for plots created in chunk 
+fig.height = 7: height in inches for plots created in chunk 
 
 ```
 
-## Global Specification 
+## Global Specifications 
 
-```{r, setup, include==FALSE}
+```{r, setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE) #This sets all chunks to inlude the code unless specified
 
 ```
@@ -199,9 +210,21 @@ y <- x * 2
 ## <b>
 ```
 
-# Table of contents
+# Table of contents 
 
 ## Basic TOC 
+
+```{r, eval = FALSE}
+title: "R_markdown_Wesnahika"
+author: "Wesnahika Charles"
+date: "2/16/2022"
+output:
+  html_document
+  toc: true 
+  toc_depth: 2 #This includes up to two headers 
+```
+
+## Floating TOC 
 
 ```{r, eval=FALSE}
 title: "R_markdown_Wesnahika"
@@ -210,24 +233,10 @@ date: "2/16/2022"
 output:
   html_document
   toc: true 
-  toc_depth: 2 #This includes up to two headers 
-  
-
-```
-
-## Floating TOC 
-
-```{r, eval=FALSE}
-#title: "R_markdown_Wesnahika"
-#author: "Wesnahika Charles"
-#date: "2/16/2022"
-#output:
-  #html_document
-  #toc: true 
-  #toc_float: true 
-  #collapsed: true
-  #smooth_scroll: true 
-  #toc_depth: 3
+  toc_float: true 
+  collapsed: true
+  smooth_scroll: true 
+  toc_depth: 3
 ```
 
 # Tabs {.tabset}
@@ -236,18 +245,23 @@ output:
 
 ## Study 1 
 
-```{r, eval=FALSE}
-#e.g. study 1 graph 
-
+```{r, eval = FALSE}
+e.g. study 1 graph
 ```
 
-# Appearance 
+## Study 2 
+
+```{r, eval = FALSE}
+e.g. study 2 graph 
+```
+
+# Appearence 
 
 ## Themes 
 
 ### Built in themes 
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 theme: Specicifies theme to use from Bootswatch theme library 
 specify: default, cerulean, journal, flatly, darkly, readable, spacelab, united, cosmo, lumean, paper , sandstone, simplex, and yeti (use null for no theme)
 ```
@@ -259,7 +273,7 @@ Highlight: Specifies syntax highlighting style
 Specify: default, tango, pygments, kate, monochrome, espresso, zenburn, hadlock, breezedark, and textmate(use null for no highlight)
 ```
 
-## Smart
+#Smart 
 
 ```{r, eval=FALSE}
 Smart changes: straight quotes to curly quotes, --- to em-dashes, -- to en-dashes, and ... to ellipses
@@ -267,12 +281,12 @@ Smart changes: straight quotes to curly quotes, --- to em-dashes, -- to en-dashe
 Smart is enabled by default 
 ```
 
-### Data Frame Printing 
+### Data frame printing 
 
 ```{r, eval=FALSE}
 output:
   html_document:
-    df_print: paged 
+    df_print: paged
 ```
 
 # Figures 
@@ -281,14 +295,16 @@ output:
 image: ![](nyu.jpeg)(width=50%)
 
 ## Creating images 
-```{r, eval=FALSE, eval=TRUE}
+
+```{r, eval=FALSE}
 fig.width: 7 
 fig.height: 7
 fig_caption: true 
 dev: png
 ```
 
-# Advanced Inline code 
+# Advanced inline code 
+
 ```{r}
 #run anov
 model <- aov(Sepal.Length~ Species, data = iris)
@@ -304,8 +320,6 @@ modelmatrix$p.value <- sprintf(modelmatrix$p.value, fmt = '%#.3f')
 
 modelmatrix
 ```
-> There is a significant main effect of Species on Sepal Length, *F*(`r modelmatrix$df[1]`, `r modelmatrix$df[2]`) = 
-`r modelmatrix$statistic[1]`, *p* = `r modelmaxtrix$p.value[1]`
 
 # Notes
 
@@ -317,10 +331,7 @@ modelmatrix
 5. Make sure you are capitalizing all letters in the {r} code specifications 
 6. The knitted doc is different depending on which type of markdown_script you use 
 7. Dont forget to add a space between # and the header
-8. To hide library loadings, use both results=FALSE and message=FALSE.
-
-
-
+8. To hide library loadings, use both results=FALSE and message = FALSE
 
 
 

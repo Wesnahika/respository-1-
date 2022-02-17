@@ -8,3 +8,37 @@ tags:
   - tidyverse
   - dataframe
 ---
+## Data: Sales 
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+url <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/purchases.csv'
+customers <- read_csv(url)
+```
+
+### A grammar of tidying data
+
+The goal of tidyr is to help you tidy your data via
+
+pivoting for going between wide and long data
+splitting and combining character columns
+nesting and unnesting columns
+clarifying how NAs should be treate
+
+## Pivoting data 
+
+### pivot_longer()
+
+```{r}
+purchases <- customers %>%
+  pivot_longer(
+    cols = item_1:item_3,  # variables item_1 to item_3
+    names_to = "item_no",  # column names -> new column called item_no
+    values_to = "item"     # values in columns -> new column called item
+    )
+
+```
+
