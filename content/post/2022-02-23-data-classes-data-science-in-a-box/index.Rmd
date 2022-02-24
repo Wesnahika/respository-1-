@@ -1,0 +1,247 @@
+---
+title: 'Data classes: Data science in a box '
+author: Wesnahika
+date: '2022-02-23'
+slug: data-classes-data-science-in-a-box
+categories: []
+tags:
+  - data
+  - data-science
+  - dataframe
+  - tidyverse
+  - r
+---
+# Data classes 
+
+We talked about types so far, next we'll introduce the concept of classes
+
+Vectors are like Lego building blocks
+We stick them together to build more complicated constructs, e.g. representations of data
+The class attribute relates to the S3 class of an object which determines its behaviour
+You don't need to worry about what S3 classes really mean, but you can read more about it here if you're curious
+Examples: factors, dates, and data frames
+
+## Factors 
+
+R uses factors to handle categorical variables, variables that have a fixed and known set of possible values
+
+```{r}
+x <- factor(c("BS", "MS", "PhD", "MS"))
+x
+```
+
+```{r}
+typeof(x)
+```
+
+```{r}
+class(x)
+```
+
+### More on factors 
+
+```{r}
+library(tidyverse)
+glimpse(x)
+```
+
+
+```{r}
+as.integer(x)
+```
+
+## Dates 
+
+```{r}
+y <- as.Date("2020-01-01")
+y
+```
+```{r}
+typeof(y)
+```
+
+```{r}
+class(y)
+```
+
+### More on dates 
+
+We can think of dates like an integer (the number of days since the origin, 1 Jan 1970) and an integer (the origin) glued together
+
+```{r}
+as.integer(y)
+```
+```{r}
+as.integer(y)/365
+```
+
+## Data frames 
+
+We can think of data frames like like vectors of equal length glued together
+
+```{r}
+df <- data.frame(x = 1:2, y = 3:4)
+df
+```
+
+```{r}
+typeof(df)
+```
+
+```{r}
+class(df)
+```
+## Lists
+
+```{r}
+l <- list(
+  x = 1:4,
+  y = c("hi", "hello", "jello"),
+  z = c(TRUE, FALSE)
+)
+l
+```
+
+## lists and data frames 
+
+A data frame is a special list containing vectors of equal length
+When we use the pull() function, we extract a vector from the data frame
+
+```{r}
+df
+```
+
+```{r}
+df %>%
+  pull(y)
+```
+
+# Working with factors 
+
+## read the data using char strings 
+
+```{r}
+url <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/cat-lovers.csv'
+
+cat_lovers <- read_csv(url)
+```
+
+```{r}
+library(tidyverse)
+glimpse(cat_lovers)
+```
+
+## But coerce when plotting 
+
+```{r}
+ggplot(cat_lovers, mapping = aes( x = handedness)) +
+  geom_bar()
+```
+
+## Forcats is used to manipulate factors 
+
+```{r}
+cat_lovers %>%
+  mutate(handedness = fct_infreq(handedness)) %>%
+  ggplot(mapping = aes(x = handedness)) + 
+  geom_bar()
+```
+
+## points on factors 
+
+Factors are useful when you have true categorical data and you want to override the ordering of character vectors to improve display.
+They are also useful in modeling scenarios.
+The forcats package provides a suite of useful tools that solve common problems with factors.
+
+# Working with dates 
+
+## How to make a date 
+
+lubridate is the tidyverse-friendly package that makes dealing with dates a little easier.
+It's not one of the core tidyverse packages, hence it's installed with install.packages("tidyverse) but it's not loaded with it, and needs to be explicitly loaded with library(lubridate).
+
+```{r}
+url <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/hotels.csv' 
+hotels <- read_csv(url)
+```
+
+
+```{r}
+hotels %>%
+  select(starts_with("arrival"))
+```
+
+### Step 1: Construct the class
+
+```{r}
+library(glue)
+
+hotels %>%
+  mutate(
+    arrival_date = glue("{arrival_date_year} {arrival_date_month} {arrival_date_day_of_month}")
+    ) %>% 
+  relocate(arrival_date)
+```
+
+### Step 2: Count the bookings per date 
+
+```{r}
+hotels %>%
+  mutate(arrival_date = glue("{arrival_date_year} {arrival_date_month} {arrival_date_day_of_month}")) %>%
+  count(arrival_date)
+## # A tibble: 793 x 2
+```
+
+### Step 3: Visualize bookings per date 
+
+```{r}
+hotels %>%
+  mutate(arrival_date = glue("{arrival_date_year} {arrival_date_month} {arrival_date_day_of_month}")) %>%
+  count(arrival_date) %>%
+  ggplot(aes(x = arrival_date, y = n, group = 1)) +
+  geom_line()
+```
+
+### looking a little harder... 
+
+Why does the plot start with August when we know our data start in July? And why does 10 August come after 1 August?
+
+### Step 1: Revise the construct dates 
+
+```{r}
+library(lubridate)
+hotels %>%
+  mutate(
+    arrival_date = ymd(glue("{arrival_date_year} {arrival_date_month} {arrival_date_day_of_month}"))
+    ) %>% 
+  relocate(arrival_date)
+```
+
+### Step 2: Count the bookings per date 
+
+```{r}
+hotels %>%
+  mutate(arrival_date = ymd(glue("{arrival_date_year} {arrival_date_month} {arrival_date_day_of_month}"))) %>% 
+  count(arrival_date)
+```
+
+### Step 3a: Visualize booking per date 
+
+```{r}
+hotels %>%
+  mutate(arrival_date = ymd(glue("{arrival_date_year} {arrival_date_month} {arrival_date_day_of_month}"))) %>% 
+  count(arrival_date) %>%
+  ggplot(aes(x = arrival_date, y = n, group = 1)) +
+  geom_line()
+```
+
+### Step 3b: Visualize the data with a smooth curve 
+
+```{r}
+hotels %>%
+  mutate(arrival_date = ymd(glue("{arrival_date_year} {arrival_date_month} {arrival_date_day_of_month}"))) %>% 
+  count(arrival_date) %>%
+  ggplot(aes(x = arrival_date, y = n, group = 1)) +
+  geom_smooth()
+```
+
