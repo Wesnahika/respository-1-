@@ -1,0 +1,204 @@
+---
+title: 'Data IO '
+author: Wesnahika
+date: '2022-02-23'
+slug: data-io
+categories: []
+tags:
+  - data
+  - data-science
+  - r
+---
+# Importing data 
+
+## Reading rectangular data into R
+
+### readr
+
+read_csv() - comma delimited files.
+read_csv2() - semicolon separated files (common in countries where , is used as the decimal place).
+read_tsv() - tab delimited files.
+read_delim() - reads in files with any delimiter.
+read_fwf() - fixed width files.
+...
+
+### readxl
+
+read_excel() - read xls or xlsx files
+...
+
+## Reading data 
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+url <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/nobel.csv'
+
+nobel <- read_csv(url)
+nobel
+```
+
+## Writing data 
+
+```{r}
+df <- tribble(
+  ~x, ~y,
+  1,  "a",
+  2,  "b",
+  3,  "c"
+)
+
+```
+
+```{r}
+read_csv("https://raw.githubusercontent.com/Wesnahika/tidyverse/main/df.csv")
+
+```
+
+# Variable names 
+
+## data with bad names
+
+```{r}
+url <- "https://raw.githubusercontent.com/Wesnahika/tidyverse/main/edibnb-badnames.csv"
+edibnb_badnames <- read_csv(url)
+names(edibnb_badnames)
+```
+
+... but R doesn't allow spaces in variable names
+
+### Option 1 - Define column names 
+
+```{r}
+edibnb_col_names <- read_csv(url,
+                             col_names = c("id", "price", 
+                                           "neighbourhood", "accommodates",
+                                           "bathroom", "bedroom", 
+                                           "bed", "review_scores_rating", 
+                                           "n_reviews", "url"))
+names(edibnb_col_names)
+```
+
+### Option 2 - Format text to snake_case
+
+```{r}
+edibnb_clean_names <- read_csv(url) %>%
+  janitor::clean_names()
+names(edibnb_clean_names)
+```
+ 
+# Variable types 
+
+```{r}
+url <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/df-na.csv'
+
+df_na <- read_csv(url)
+
+df_na
+```
+
+### Option 1: Explicit NAs
+
+```{r}
+read_csv(url, 
+         na = c("", "NA", ".", "9999", "Not applicable"))
+```
+
+### Option 2: Specify the column types 
+
+```{r}
+read_csv(url, col_types = list(col_double(), 
+                                            col_character(), 
+                                            col_character()))
+```
+
+# Case study: Favorite foods
+
+## favorite foods 
+
+```{r}
+fav_food <- read_csv("https://raw.githubusercontent.com/Wesnahika/tidyverse/main/favourite-food.csv")
+fav_food
+```
+
+```{r}
+fav_food <- read_csv("https://raw.githubusercontent.com/Wesnahika/tidyverse/main/favourite-food.csv") %>%
+  janitor::clean_names()
+
+fav_food
+```
+
+## Handling NAs 
+
+```{r}
+fav_food <- read_csv('https://raw.githubusercontent.com/Wesnahika/tidyverse/main/favourite-food.csv',
+                       na = c("N/A", "99999")) %>%
+  janitor::clean_names()
+fav_food
+                       
+```
+
+## Make age numeric
+
+```{r}
+fav_food <- fav_food %>%
+  mutate(
+    age = if_else(age == "five", "5", age),
+    age = as.numeric(age)
+    )
+glimpse(fav_food)
+```
+
+## What is the socio economic status? 
+
+```{r}
+fav_food %>%
+  count(ses)
+```
+
+## Turn ses into a factor 
+
+```{r}
+fav_food <- fav_food %>%
+  mutate(ses = fct_relevel(ses, "Low", "Middle", "High"))
+fav_food %>%
+  count(ses)
+```
+
+## Placing it together 
+
+```{r}
+fav_food <- read_csv('https://raw.githubusercontent.com/Wesnahika/tidyverse/main/favourite-food.csv') %>%
+  janitor::clean_names() %>%
+  mutate(
+    age = if_else(age == "five", "5", age), 
+    age = as.numeric(age),
+    ses = fct_relevel(ses, "Low", "Middle", "High")
+  )
+```
+
+## Out and back in 
+
+```{r}
+url <- 'https://raw.githubusercontent.com/Wesnahika/tidyverse/main/fav-food-clean.csv'
+
+fav_food_clean <- read_csv(url)
+```
+
+```{r}
+fav_food_clean %>%
+  count(ses)
+```
+
+# Other types of data 
+
+googlesheets4: Google Sheets
+haven: SPSS, Stata, and SAS files
+DBI, along with a database specific backend (e.g. RMySQL, RSQLite, RPostgreSQL etc): allows you to run SQL queries against a database and return a data frame
+jsonline: JSON
+xml2: xml
+rvest: web scraping
+httr: web APIs
+sparklyr: data loaded into spark
